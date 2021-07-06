@@ -28,23 +28,92 @@ namespace CRUD_MySQL
         {
             try
             {
-                conexao = new MySqlConnection("Server=localhost;Database=cliente;Uid=root;Pwd=root;");
+                conexao = new MySqlConnection("Server=localhost;Database=cad_cliente;Uid=root;Pwd=root;");
                 
                 strSQL = "INSERT INTO CAD_CLIENTE (NOME, NUMERO) VALUES (@NOME, @NUMERO)";
 
                 comando = new MySqlCommand(strSQL, conexao);
+                comando.Parameters.AddWithValue("@NOME", txtNome.Text);
+                comando.Parameters.AddWithValue("@NUMERO", txtNumero.Text);
 
-                comando.Parameters.AddWithValue("@NOME", );
+                conexao.Open();
+
+                comando.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
-
+                MessageBox.Show(ex.Message);
                 throw;
             }
             finally
             {
-
+                conexao.Close();
+                conexao = null;
+                comando = null;
             }
+        }
+
+        private void btnEditar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                conexao = new MySqlConnection("Server=localhost;Database=cad_cliente;Uid=root;Pwd=root;");
+
+                strSQL = "UPDATE CAD_CLIENTE SET NOME = @NOME, NUMERO = @NUMERO WHERE ID = @ID";
+
+                comando = new MySqlCommand(strSQL, conexao);
+                comando.Parameters.AddWithValue("@ID", txtID.Text);
+                comando.Parameters.AddWithValue("@NOME", txtNome.Text);
+                comando.Parameters.AddWithValue("@NUMERO", txtNumero.Text);
+
+                conexao.Open();
+
+                comando.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                throw;
+            }
+            finally
+            {
+                conexao.Close();
+                conexao = null;
+                comando = null;
+            }
+        }
+
+        private void btnExcluir_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                conexao = new MySqlConnection("Server=localhost;Database=cad_cliente;Uid=root;Pwd=root;");
+
+                strSQL = "DELETE FROM CAD_CLIENTE WHERE ID = @ID";
+
+                comando = new MySqlCommand(strSQL, conexao);
+                comando.Parameters.AddWithValue("@ID", txtID.Text);
+
+                conexao.Open();
+
+                comando.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                throw;
+            }
+            finally
+            {
+                conexao.Close();
+                conexao = null;
+                comando = null;
+            }
+        }
+
+        private void btnConsultar_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
