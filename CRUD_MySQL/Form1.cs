@@ -113,7 +113,64 @@ namespace CRUD_MySQL
 
         private void btnConsultar_Click(object sender, EventArgs e)
         {
+            try
+            {
+                conexao = new MySqlConnection("Server=localhost;Database=cad_cliente;Uid=root;Pwd=root;");
 
+                strSQL = "SELECT * FROM CAD_CLIENTE WHERE ID = @ID";
+
+                comando = new MySqlCommand(strSQL, conexao);
+                comando.Parameters.AddWithValue("@ID", txtID.Text);
+
+                conexao.Open();
+
+                dataReader = comando.ExecuteReader();
+                while (dataReader.Read())
+                {
+                    txtNome.Text = Convert.ToString(dataReader["nome"]);
+                    txtNumero.Text = Convert.ToString(dataReader["numero"]);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                throw;
+            }
+            finally
+            {
+                conexao.Close();
+                conexao = null;
+                comando = null;
+            }
+        }
+
+        private void btnExibir_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                conexao = new MySqlConnection("Server=localhost;Database=cad_cliente;Uid=root;Pwd=root;");
+
+                strSQL = "SELECT * FROM CAD_CLIENTE";
+
+                dataAdapter = new MySqlDataAdapter(strSQL, conexao);
+
+                DataTable dataTable = new DataTable();
+
+                dataAdapter.Fill(dataTable);
+
+                dgvDados.DataSource = dataTable;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                throw;
+            }
+            finally
+            {
+                conexao.Close();
+                conexao = null;
+                comando = null;
+            }
         }
     }
 }
